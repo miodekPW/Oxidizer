@@ -70,6 +70,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>EasyBMP/;$(IncludePath)</IncludePath>
+    <SourcePath>EasyBMP/;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>EasyBMP/;$(IncludePath)</IncludePath>
+    <SourcePath>EasyBMP/;$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -127,15 +135,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="EasyBMP.h" />
-    <ClInclude Include="EasyBMP_BMP.h" />
-    <ClInclude Include="EasyBMP_DataStructures.h" />
-    <ClInclude Include="EasyBMP_VariousBMPutilities.h" />
+    <ClInclude Include="EasyBMP\EasyBMP.h" />
+    <ClInclude Include="EasyBMP\EasyBMP_BMP.h" />
+    <ClInclude Include="EasyBMP\EasyBMP_DataStructures.h" />
+    <ClInclude Include="EasyBMP\EasyBMP_VariousBMPutilities.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="voxel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EasyBMP.cpp" />
+    <ClCompile Include="EasyBMP\EasyBMP.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="voxel.cpp" />

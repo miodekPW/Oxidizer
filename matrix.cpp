@@ -52,12 +52,13 @@ void matrix::load2Ddata(string dir, int treshold)
 
 void matrix::load3Ddata(string dir, int treshold)
 {
-	
+	string temp_str, temp_str2;
+	int n, iter;
+	BMP image;
+	//
 	char const* digits = "0123456789";
 	size_t start_pos = dir.find_first_of("0");
-	string temp_str, temp_str2;
-	int n,iter;
-	BMP image;
+	
 	image.ReadFromFile(dir.c_str());
 	xMax = image.TellWidth();
 	yMax = image.TellHeight();
@@ -578,9 +579,7 @@ void matrix::oxideGrowth(int nrSteps, double kp, double voxelSize, int direction
 			dilationTimes.pop_front();
 			erosionTimes.pop_front();
 		}
-		
 	}
-
 }
 
 int matrix::countExposedFaces(int x, int y, int z)
@@ -655,9 +654,6 @@ float matrix::calculateSurface2D(float voxelSize)
 	float faceWeight = 0.894f * voxelSize * voxelSize;
 	float edgeWeight = 1.341f * voxelSize * voxelSize;
 	float cornerWeight = 1.588f * voxelSize * voxelSize;
-	//float faceWeight = voxelSize * voxelSize;
-	//float edgeWeight = sqrt(2) * voxelSize * voxelSize;
-	//float cornerWeight = sqrt(3)/2 * voxelSize * voxelSize;
 	for (int i = 0; i< xMax; i++) {
 		for (int j = 0; j < yMax; j++) {
 			for (int k = 0; k < zMax; k++) {
@@ -672,8 +668,6 @@ float matrix::calculateSurface2D(float voxelSize)
 					surface += exposedCorners * cornerWeight;
 					surface -= exposedEdges  * faceWeight;
 					surface -= exposedCorners  * edgeWeight;
-					//surface -= exposedCorners * (edgeWeight - faceWeight);
-
 				}
 			}
 			
@@ -681,7 +675,6 @@ float matrix::calculateSurface2D(float voxelSize)
 	}
 	cout << "surface = " <<surface<< endl;
 	surface = surface / (static_cast<float>(xMax) * static_cast<float>(yMax) * static_cast<float>(zMax) * voxelSize * voxelSize * voxelSize);
-	//cout << "Specific surface = " << endl;
 	return surface;
 }
 
@@ -689,83 +682,55 @@ float matrix::calculateSurface2D(float voxelSize)
 
 void matrix::draw2D(int zlayer, string path)
 {
-	BMP obraz;
-	obraz.SetSize(xMax, yMax);
-	obraz.SetBitDepth(8);
+	BMP image;
+	image.SetSize(xMax, yMax);
+	image.SetBitDepth(8);
 	for (int l = 0; l < xMax; l++) {
 		for (int k = 0; k < yMax; k++) {
-
 			//0 - unconnected pore; 1 - connected pore; 2 - steel; 3 - oxide
 			//unconnected - gray
 			if (data[l][k][zlayer].getAssignment() == 0) {
-				obraz(l, k)->Red = 128;
-				obraz(l, k)->Blue = 128;
-				obraz(l, k)->Green = 128;
+				image(l, k)->Red = 128;
+				image(l, k)->Blue = 128;
+				image(l, k)->Green = 128;
 			}
 			//connected - green
 			if (data[l][k][zlayer].getAssignment() == 1) {
-				obraz(l, k)->Red = 0;
-				obraz(l, k)->Blue = 0;
-				obraz(l, k)->Green = 255;
+				image(l, k)->Red = 0;
+				image(l, k)->Blue = 0;
+				image(l, k)->Green = 255;
 			}
 
 			//material - blue
 			if (data[l][k][zlayer].getAssignment() == 2) {
-				obraz(l, k)->Red = 0;
-				obraz(l, k)->Blue = 255;
-				obraz(l, k)->Green = 0;
+				image(l, k)->Red = 0;
+				image(l, k)->Blue = 255;
+				image(l, k)->Green = 0;
 			}
 			//oxide - red
 			if (data[l][k][zlayer].getAssignment() == 3) {
-				obraz(l, k)->Red = 255;
-				obraz(l, k)->Blue = 0;
-				obraz(l, k)->Green = 0;
+				image(l, k)->Red = 255;
+				image(l, k)->Blue = 0;
+				image(l, k)->Green = 0;
 			}
 		}
 	}
-	obraz.WriteToFile(path.c_str());
+	string extension = ".bmp";
+	string path2=path.substr(0, path.length() - extension.length());
+	path2 += to_string(zlayer);
+	path2 += extension;
+	image.WriteToFile(path2.c_str());
 }
 
 void matrix::draw3D(string path)
 {	
 	string filename;
-	BMP obraz;
-	obraz.SetSize(xMax, yMax);
-	obraz.SetBitDepth(8);
+	BMP image;
+	image.SetSize(xMax, yMax);
+	image.SetBitDepth(8);
 	for (int i = 0; i < zMax; i++) {
-		for (int l = 0; l < xMax; l++) {
-			for (int k = 0; k < yMax; k++) {
-
-				//0 - unconnected pore; 1 - connected pore; 2 - steel; 3 - oxide
-				//unconnected - gray
-				if (data[l][k][i].getAssignment() == 0) {
-					obraz(l, k)->Red = 128;
-					obraz(l, k)->Blue = 128;
-					obraz(l, k)->Green = 128;
-				}
-				//connected - green
-				if (data[l][k][i].getAssignment() == 1) {
-					obraz(l, k)->Red = 0;
-					obraz(l, k)->Blue = 0;
-					obraz(l, k)->Green = 255;
-				}
-
-				//material - blue
-				if (data[l][k][i].getAssignment() == 2) {
-					obraz(l, k)->Red = 0;
-					obraz(l, k)->Blue = 255;
-					obraz(l, k)->Green = 0;
-				}
-				//oxide - red
-				if (data[l][k][i].getAssignment() == 3) {
-					obraz(l, k)->Red = 255;
-					obraz(l, k)->Blue = 0;
-					obraz(l, k)->Green = 0;
-				}
-			}
-		}
-		filename = path+"testdilation_" + to_string(i) + ".bmp";
-		//obraz.WriteToFile(filename.c_str());
+		draw2D(i, path);
+		
 	}
 }
 
