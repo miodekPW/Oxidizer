@@ -4,11 +4,11 @@ This software is dedicated to calculations of microstructural changes during hig
 - binarized bmp images representing 2D image of porous microstructure (e.g. from SEM observations)
 - series of binarized bmp images representing subsequent slices of the porous microstructure (e.g. from CT data)
 
-The oxide growth simulation is based on morphological operations of dilation and erosion. During simulation, it calculates morphological changes, porosity and Cr content during oxidation. Time domain discretization is based on resolution of the input data, as each dilation step leads to the growth of the oxide layer of a thickness equal to the pixel/voxel size. More information about the exact procedure can be found in paper: "to be added after publishing".
+The oxide growth simulation is based on morphological operations of dilation and erosion. During simulation, it calculates morphological changes, porosity and Cr content during oxidation. Time domain discretization is based on resolution of the input data, as each dilation step leads to the growth of the oxide layer of a thickness equal to the pixel/voxel size. More information about the exact procedure can be found in paper: Samih Haj Ibrahim, Damian Koszelow, Małgorzata Makowska, Sebastian Molin, Modeling of microstructure evolution during high-temperature oxidation of porous Fe-Cr steels, Materials & Design, Volume 249 (2025) p. 113536.
 
 This software is fully opensourced and you can freely use it and modify. If you want to publish results generated with this software please cite:
 
-- "to be added after publishing".
+- Samih Haj Ibrahim, Damian Koszelow, Małgorzata Makowska, Sebastian Molin, Modeling of microstructure evolution during high-temperature oxidation of porous Fe-Cr steels, Materials & Design, Volume 249 (2025) p. 113536
 
 # Classes
 **main.cpp** - starting point in which you specify necessary information about oxidation kinetics (kp value, initial chromium content) and image data (path, resolution).
